@@ -1,1 +1,5 @@
 .DS_Store
+pipeline.local.md
+dashboard.local.html
+.tracker-backups/
+__pycache__/

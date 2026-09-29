@@ -1,22 +1,20 @@
-# Manuscript Dashboard Demo
+# Manuscript pipeline tracker
 
-An interactive public demonstration of a manuscript and research-pipeline
-dashboard.
+This repository contains the tracker interface, a Markdown parser, and a local server. It contains no manuscript records. The public GitHub Pages view shows the empty interface.
 
-All manuscript titles, journals, people, identifiers, dates, notes, projects,
-events, and reminders in this repository are fictional sample data. This
-repository does not contain the private source tracker or its history.
+## Use it locally
 
-## View
+1. Clone this repository.
+2. Copy `pipeline.example.md` to `pipeline.local.md` and add your own rows.
+3. On macOS, double-click `Open tracker.command`. On another system, run `python3 build_dashboard.py` and then `python3 tracker_server.py`.
+4. Open `http://127.0.0.1:8770/dashboard.local.html`.
 
-Open `index.html` in a browser, or use the GitHub Pages link in the repository
-description once publishing is enabled.
+The builder reads `pipeline.local.md` and writes `dashboard.local.html`. Git ignores both files and the local deletion backups. The server binds to your computer only. The card menu can delete a row while saving a backup in `.tracker-backups`.
 
-## Features
+## Data format
 
-- Manuscript status filters
-- Editorial-stage aging
-- Automatic presumed admin-check completion after 14 days
-- Longest-waiting and newest-activity ordering
-- Responsive desktop and mobile layouts
+The Markdown tables in `pipeline.example.md` define the input columns. Each manuscript needs a title, a status, and a `YYYY-MM-DD` status change date. You can leave other cells as `—`. The tracker recognizes `admin check`, `submitted`, `under review`, `revise and resubmit`, `revised submitted`, `accepted`, `published`, and `rejected`. Other status text appears under needs work.
 
+The browser advances the displayed editorial stage as time passes. The Markdown row keeps the status you entered. Accepted manuscripts move into year review after 14 days, and published manuscripts appear there immediately.
+
+Keep your records in `pipeline.local.md`. Never force-add that file or `dashboard.local.html` to Git.

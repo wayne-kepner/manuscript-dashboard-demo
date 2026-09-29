@@ -3,204 +3,292 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manuscript Dashboard — Public Demo</title>
+<title>Manuscript pipeline tracker</title>
 <style>
-:root{--bg:#f4f5f1;--panel:#fff;--ink:#202626;--muted:#59656a;--line:#d9dfd8;--soft:#edf1ed;--navy:#24323b;--due:#bc4c19;--due-bg:#fff1e9;--review:#17699e;--review-bg:#eaf5fb;--accepted:#1e714c;--accepted-bg:#e9f6ee;--ready:#8b6500;--ready-bg:#fff6d7;--work:#675489;--work-bg:#f2eef9;--quiet:#687176;--radius:12px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{display:grid;grid-template-columns:276px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;padding:26px 18px;background:var(--panel);border-right:1px solid var(--line);overflow:auto}.eyebrow,.label{margin:0;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sidebar h1{margin:4px 0 4px;font-size:25px;line-height:1.08;letter-spacing:-.04em}.as-of{margin:0;color:var(--muted);font-size:13px}.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:24px 0 20px}.stat{padding:11px;border:1px solid var(--line);border-radius:9px;background:#fbfcfa}.stat strong{display:block;font-size:23px;line-height:1}.stat span{display:block;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.25}.filter-title{margin:0 0 8px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.filters{display:grid;gap:5px}.filters button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--ink);font:inherit;font-size:13px;text-align:left;cursor:pointer}.filters button:hover{background:var(--soft)}.filters button.active{border-color:var(--navy);background:var(--navy);color:#fff}.filters em{font-style:normal;font-variant-numeric:tabular-nums;opacity:.72}.filter-group{margin-top:18px}.content{max-width:1420px;padding:32px clamp(22px,4vw,58px) 48px}.page-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:22px}.page-heading h2{margin:4px 0 0;font-size:29px;line-height:1.08;letter-spacing:-.04em}.page-heading p:last-child{margin:0;color:var(--muted);font-size:13px;text-align:right}.attention{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:32px}.alert{padding:15px 17px;border:1px solid var(--line);border-left:5px solid var(--due);border-radius:var(--radius);background:var(--panel)}.alert.overdue{border-left-color:#a53a31;background:#fff9f7}.alert-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.alert h3{margin:0;font-size:16px;line-height:1.3}.alert p{margin:3px 0 0;color:var(--muted);font-size:13px}.badge,.deadline{display:inline-flex;align-items:center;width:max-content;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:700;line-height:1.35}.badge.review{color:var(--review);background:var(--review-bg)}.badge.accepted{color:var(--accepted);background:var(--accepted-bg)}.badge.work{color:var(--work);background:var(--work-bg)}.badge.submitted{color:#4d5960;background:#eef0f1}.deadline{color:#9a3b14;background:var(--due-bg)}.deadline.overdue{color:#8d3029;background:#fde8e5}.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:28px 0 12px}.section-head h2{margin:0;font-size:20px;letter-spacing:-.02em}.section-head p{margin:0;color:var(--muted);font-size:13px}.list{display:grid;gap:10px}.item{position:relative;padding:17px 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 1px 0 rgba(20,35,25,.02)}.item:hover{border-color:#c2cbc3}.item[hidden]{display:none}.item-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.item h3{margin:7px 0 0;font-size:18px;line-height:1.28;letter-spacing:-.015em}.item .journal{margin:3px 0 0;color:var(--muted);font-size:13px}.item .status-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}.item .date-line{margin:0;color:var(--muted);font-size:13px;text-align:right;white-space:nowrap}.item .date-line strong{display:block;color:var(--ink);font-size:13px}.item-details{display:grid;grid-template-columns:minmax(190px,1.1fr) minmax(0,1.8fr);gap:12px 24px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}.item-details p{margin:0;overflow-wrap:anywhere}.item-details .label{display:block;margin-bottom:2px;font-size:10px}.item.due{border-left:5px solid var(--due)}.empty{padding:32px;border:1px dashed var(--line);border-radius:var(--radius);color:var(--muted);text-align:center}.queue{margin-top:32px}.queue-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.compact{padding:16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}.compact h3{margin:0;font-size:16px;line-height:1.3}.compact p{margin:4px 0 0;color:var(--muted);font-size:13px}.compact .deadline{margin-top:11px}.compact.overdue{border-left:5px solid #a53a31}.compact.event{border-left:5px solid var(--review)}.compact.todo{border-left:5px solid var(--work)}button:focus-visible{outline:3px solid #78b8e5;outline-offset:2px}@media(max-width:940px){.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}.sidebar-inner{display:grid;grid-template-columns:220px 1fr;gap:20px}.stat-grid{margin:0}.filter-group{margin-top:0}.filters{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}.content{padding-top:26px}}@media(max-width:650px){.sidebar-inner,.attention,.queue-grid{grid-template-columns:1fr}.content{padding:22px 16px 34px}.page-heading,.section-head{display:block}.page-heading p:last-child,.section-head p{margin-top:6px;text-align:left}.item-head{display:block}.item .date-line{margin-top:12px;text-align:left}.item .date-line strong{display:inline}.item-details{grid-template-columns:1fr}.sidebar{padding:20px 16px}.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.attention .empty{grid-column:1/-1;margin:0}
-:root{--bg:#f6f8fb;--ink:#172033;--muted:#64748b;--line:#dce3ec;--soft:#eef3f8;--navy:#173b63;--review:#2563a6;--review-bg:#eaf3fb;--accepted:#26734d;--accepted-bg:#eaf6ef;--work:#6d4ea2;--work-bg:#f3eefa}
-.badge.admin{color:#9a4a08;background:#fff3dc}.badge.passed{color:#126b54;background:#e6f6ef}.badge.editor{color:#40536c;background:#eef2f6}.badge.review{color:#1f5f9d;background:#eaf3fb}.badge.revised{color:#654398;background:#f3eefa}.badge.journal{color:#0f6670;background:#e7f6f7}.badge.rejected{color:#963434;background:#fcecec}
-.item.stage-admin{--stage:#b45309;border-left:4px solid var(--stage)}.item.stage-passed{--stage:#168167;border-left:4px solid var(--stage)}.item.stage-review{--stage:#2563a6;border-left:4px solid var(--stage)}.item.stage-revised{--stage:#6d4ea2;border-left:4px solid var(--stage)}.item.stage-submitted{--stage:#0f7c86;border-left:4px solid var(--stage)}
-.item{box-shadow:0 2px 8px rgba(23,32,51,.05);transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}.item:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(23,32,51,.08)}
-.subfilter{margin-left:14px;width:calc(100% - 14px)!important;color:var(--muted)!important}.subfilter.active{color:#fff!important}
-.view-tools{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 14px}.summary-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;flex:1}.summary-card{padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}.summary-card strong{display:block;font-size:20px;font-variant-numeric:tabular-nums}.summary-card span{color:var(--muted);font-size:11px}.sort-control{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;white-space:nowrap}.sort-control select{padding:8px 28px 8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit}
-.age-line strong{font-size:22px!important;font-variant-numeric:tabular-nums;color:var(--stage,var(--ink))!important}.age-line span{display:block}.item-more{margin-top:14px;padding-top:11px;border-top:1px solid var(--line)}.item-more summary{width:max-content;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer}.item-more .item-details{margin-top:11px;padding-top:0;border-top:0}
-[hidden]{display:none!important}
-@media(max-width:760px){.view-tools{display:block}.summary-strip{grid-template-columns:repeat(2,1fr)}.sort-control{margin-top:10px}.sort-control select{flex:1}.age-line{text-align:left!important}.age-line strong{display:inline-block;margin-right:5px}.age-line span{display:inline}}
-.demo-note{margin:0 0 20px;padding:11px 14px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;color:#1e3a5f;font-size:13px}.demo-note strong{font-weight:750}
+:root{--bg:#f6f8fb;--panel:#fff;--ink:#172033;--muted:#64748b;--line:#dce3ec;--navy:#173b63;--soft:#eef3f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{display:grid;grid-template-columns:276px minmax(0,1fr);min-height:100vh;transition:grid-template-columns .2s ease}.shell.sidebar-collapsed{grid-template-columns:58px minmax(0,1fr)}#sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:18px;background:#fff;border-right:1px solid var(--line)}main{min-width:0;padding:30px clamp(22px,4vw,56px)}h1,h2,h3,p{margin-top:0}h1{font-size:25px;line-height:1.1}h2{font-size:24px;line-height:1.15}h3{font-size:17px;line-height:1.28}.eyebrow,b{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.sidebar-toggle{width:100%;margin-bottom:16px;align-items:center;border-color:var(--line);color:var(--navy);font-size:13px;font-weight:700}.toggle-icon{font-size:19px;line-height:1;transition:transform .2s ease}.shell.sidebar-collapsed #sidebar{padding:18px 8px}.shell.sidebar-collapsed .sidebar-content{display:none}.shell.sidebar-collapsed .sidebar-toggle{justify-content:center;padding:9px 0}.shell.sidebar-collapsed .toggle-label{display:none}.shell.sidebar-collapsed .toggle-icon{transform:rotate(180deg)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}.stats button,.item,.alert,.queue article{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}.stats button{display:block;width:100%;min-height:88px;text-align:left;transition:border-color .15s ease,background .15s ease,transform .15s ease}.stats button:hover{border-color:#aebed0;transform:translateY(-1px)}.stats button strong{display:block;font-size:22px}.stats button span{display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.35}.stats button.active span{color:inherit}nav{display:grid;gap:5px}button{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}button:hover{background:var(--soft)}button.active{background:var(--navy);color:white}button:focus-visible,summary:focus-visible{outline:3px solid #86b7e7;outline-offset:2px}.filter-label{margin:22px 10px 7px}.top-row{display:block;margin-bottom:24px}.attention,.list,.queue-grid,.year-list{display:grid;gap:10px}.attention .alert{width:100%}.alert h3{max-width:1100px}.item-head{display:flex;justify-content:space-between;gap:18px}.journal,.date-line,.details p,.queue p,.alert p{color:var(--muted)}.age-line{flex:0 0 auto;text-align:right;white-space:nowrap}.age-line strong{display:block;color:var(--ink)}.age-line span{font-size:13px}.status-row{display:flex;gap:6px;flex-wrap:wrap}.badge,.deadline{display:inline-flex;width:max-content;border-radius:999px;padding:3px 8px;font-size:12px;font-weight:700}.admin{color:#9a4a08;background:#fff3dc}.submitted{color:#0f6670;background:#e7f6f7}.review{color:#1f5f9d;background:#eaf3fb}.revised,.work{color:#654398;background:#f3eefa}.rr{color:#8a3d6b;background:#fbeef5}.accepted{color:#26734d;background:#eaf6ef}.rejected,.overdue{color:#963434;background:#fcecec}.deadline{color:#9a3b14;background:#fff1e9}.group-head{display:flex;align-items:baseline;gap:8px;margin:18px 0 -2px;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.group-head[hidden]{display:none}.group-head:first-child{margin-top:0}.group-head::after{flex:1;height:1px;background:var(--line);content:""}.group-head em{font-style:normal;font-weight:600;letter-spacing:0;text-transform:none}.stage-admin{border-left:4px solid #b45309}.stage-submitted{border-left:4px solid #0f7c86}.stage-review{border-left:4px solid #2563a6}.stage-revised,.stage-work{border-left:4px solid #6d4ea2}.stage-rr{border-left:4px solid #a04b7c}.stage-accepted{border-left:4px solid #26734d}details{margin-top:10px}summary{width:max-content;color:var(--navy);font-size:12px;font-weight:700;cursor:pointer}.details{display:grid;grid-template-columns:1fr 2fr;gap:8px 18px;margin-top:10px}.details b{display:block}.empty{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:22px;color:var(--muted);text-align:center}.year-panel{display:none;max-width:1100px}.year-panel.active{display:block}.queue{margin-top:28px}.queue-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:880px){.shell,.shell.sidebar-collapsed,.queue-grid,.details{grid-template-columns:1fr}#sidebar{position:relative;height:auto}.shell.sidebar-collapsed #sidebar{padding:12px 18px}.item-head{display:block}}
+button[hidden]{display:none}
+.filter-subgroup{display:grid;gap:3px;margin:-2px 0 5px 14px;padding-left:9px;border-left:2px solid var(--line)}
+.filter-subgroup[hidden]{display:none}
+.filter-subgroup button{width:100%;padding:6px 10px;color:var(--muted);font-size:14px}
+nav [data-filter="with-journal"] span::before,nav [data-filter="work"] span::before{display:inline-block;width:14px;content:'›';transition:transform .15s ease}
+nav [data-filter="with-journal"][aria-expanded="true"] span::before,nav [data-filter="work"][aria-expanded="true"] span::before{transform:rotate(90deg)}
+
+.item,.year-list article,.queue-grid article{position:relative;padding-right:58px}
+.card-actions{position:absolute;right:10px;top:10px;margin:0;z-index:2}
+.card-actions[open]{z-index:5}
+.card-actions summary{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:white;font-size:20px;list-style:none}
+.card-actions summary::-webkit-details-marker{display:none}
+.card-actions summary:hover{background:var(--soft)}
+.card-action-list{position:absolute;right:0;top:40px;min-width:165px;padding:5px;background:white;border:1px solid var(--line);border-radius:9px;box-shadow:0 8px 24px #17203322}
+.card-action-list button{width:100%;white-space:nowrap}
+.card-action-list .delete-action{color:#b42318}
+.rr-deadline{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;width:max-content;max-width:100%;margin:8px 0 2px;padding:8px 12px;border:1px solid #e9b9a4;border-left:4px solid #a04b31;border-radius:7px;background:#fff3ed;color:#713821}
+.rr-deadline strong{font-size:15px}.rr-deadline span{font-size:12px;font-weight:600}
+.rr-deadline.missing{border-color:#e3c7ae;border-left-color:#a66a2b;background:#fff8ed;color:#714b21}
+.rr-deadline.overdue{border-color:#e8b2b2;border-left-color:#ac3535;background:#fff0f0;color:#8a2828}
 </style>
+<style>.badge.published{color:#26734d;background:#eaf6ef}</style>
 </head>
 <body>
 <div class="shell">
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-      <div>
-        <p class="eyebrow">public demo</p>
-        <h1>pipeline</h1>
-        <p class="as-of">Fictional sample data</p>
-      </div>
-      <div class="stat-grid" aria-label="manuscript summary">
-        <div class="stat"><strong>0</strong><span>due within 14 days</span></div>
-        <div class="stat"><strong>7</strong><span>currently with journal</span></div>
-        <div class="stat"><strong>2</strong><span>accepted</span></div>
-        <div class="stat"><strong>2</strong><span>active work</span></div>
-      </div>
-      <nav class="filter-group" aria-label="manuscript filters">
-        <p class="filter-title">View manuscripts</p>
-        <div class="filters">
-          <button class="active" type="button" data-filter="all" aria-pressed="true"><span>All manuscripts</span><em>12</em></button>
-          <button type="button" data-filter="attention" aria-pressed="false"><span>Due soon</span><em>0</em></button>
-          <button type="button" data-filter="with-journal" aria-pressed="false"><span>With journal</span><em>7</em></button>
-          <button class="subfilter" type="button" data-filter="admin" aria-pressed="false"><span>Admin check</span><em>5</em></button>
-          <button class="subfilter" type="button" data-filter="passed-admin" aria-pressed="false"><span>Passed admin check</span><em>0</em></button>
-          <button class="subfilter" type="button" data-filter="review" aria-pressed="false"><span>Under review</span><em>1</em></button>
-          <button class="subfilter" type="button" data-filter="revised" aria-pressed="false"><span>Revised submitted</span><em>1</em></button>
-          <button type="button" data-filter="work" aria-pressed="false"><span>Active work</span><em>2</em></button>
-          <button type="button" data-filter="prep" aria-pressed="false"><span>Submission prep</span><em>1</em></button>
-          <button type="button" data-filter="analysis" aria-pressed="false"><span>Analysis</span><em>1</em></button>
-          <button type="button" data-filter="accepted" aria-pressed="false"><span>Accepted</span><em>2</em></button>
-          <button type="button" data-filter="rejected" aria-pressed="false"><span>Rejected</span><em>1</em></button>
-        </div>
-      </nav>
-    </div>
-  </aside>
-  <main class="content">
-    <p class="demo-note" role="note"><strong>Demonstration only.</strong> Every manuscript, journal, person, identifier, date, and note shown here is fictional.</p>
-    <header class="page-heading"><div><p class="eyebrow">research pipeline</p><h2>What needs attention</h2></div><p>Deadlines and active editorial work appear first.</p></header>
-    <section class="attention" aria-label="attention items">
-      <p class="empty">No manuscript deadlines within 14 days.</p>
-    </section>
-    <div class="section-head"><h2 id="manuscript-heading">All manuscripts <span id="result-count">(12)</span></h2><p id="filter-status" aria-live="polite">Showing all manuscript records</p></div>
-    <div class="view-tools" id="journal-tools" hidden>
-      <div class="summary-strip" aria-label="with journal summary">
-        <div class="summary-card"><strong id="journal-total">7</strong><span>active submissions</span></div>
-        <div class="summary-card"><strong id="review-total">1</strong><span>under review</span></div>
-        <div class="summary-card"><strong id="median-age">12 days</strong><span>median with journal</span></div>
-        <div class="summary-card"><strong id="oldest-age">19 days</strong><span>longest current wait</span></div>
-      </div>
-      <label class="sort-control" for="journal-sort">Order
-        <select id="journal-sort">
-          <option value="oldest">Longest waiting</option>
-          <option value="newest">Newest activity</option>
-          <option value="journal">Journal</option>
-          <option value="status">Status</option>
-        </select>
-      </label>
-    </div>
-    <section class="list" id="manuscripts">
-      <article class="item stage-revised" data-tags="with-journal revised" data-status-date="2026-07-21" data-age="5" data-stage="Revised submitted" data-journal="Journal of Applied Health Systems"><div class="item-head"><div><div class="status-row"><span class="badge revised">Revised manuscript submitted</span></div><h3>Adaptive Scheduling for Community Clinics</h3><p class="journal">Journal of Applied Health Systems</p></div><p class="date-line age-line"><strong>5 days</strong><span>Revised submission with journal since Jul 21</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Manuscript ID</span>DEMO-2026-104</p><p><span class="label">Notes</span>Revised methods and reporting sections</p><p><span class="label">Coauthors</span>Alex Morgan; Jamie Chen</p></div></details></article>
-      <article class="item stage-review" data-tags="with-journal review" data-status-date="2026-07-07" data-age="19" data-stage="Under review" data-journal="Community Care Research"><div class="item-head"><div><div class="status-row"><span class="badge review">Under review</span></div><h3>Digital Follow-Up After Hospital Discharge: A Mixed-Methods Pilot</h3><p class="journal">Community Care Research</p></div><p class="date-line age-line"><strong>19 days</strong><span>Under review since Jul 7</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Manuscript ID</span>DEMO-2026-087</p><p><span class="label">Notes</span>Second-round review in progress</p><p><span class="label">Coauthors</span>Taylor Brooks</p></div></details></article>
-      <article class="item" data-tags="rejected"><div class="item-head"><div><div class="status-row"><span class="badge rejected">Rejected</span></div><h3>A Short Commentary on Transparent Reporting</h3><p class="journal">Clinical Methods Forum</p></div><p class="date-line"><strong>No deadline</strong>Closed</p></div><div class="item-details"><p><span class="label">Notes</span>Considering a different format</p><p><span class="label">Coauthors</span>—</p></div></article>
-      <article class="item" data-tags="accepted"><div class="item-head"><div><div class="status-row"><span class="badge accepted">Accepted</span></div><h3>Improving Data Quality in Small Research Teams</h3><p class="journal">Open Research Practice</p></div><p class="date-line"><strong>No deadline</strong>Complete</p></div><div class="item-details"><p><span class="label">Notes</span>Accepted; production files submitted</p><p><span class="label">Coauthors</span>—</p></div></article>
-      <article class="item" data-tags="accepted"><div class="item-head"><div><div class="status-row"><span class="badge accepted">Accepted</span></div><h3>Participant-Centered Approaches to Longitudinal Survey Retention</h3><p class="journal">Journal of Field Research</p></div><p class="date-line"><strong>No deadline</strong>Complete</p></div><div class="item-details"><p><span class="label">Notes</span>Accepted; awaiting proofs</p><p><span class="label">Coauthors</span>Jordan Lee; Sam Patel; Morgan Diaz</p></div></article>
-      <article class="item stage-admin" data-tags="with-journal admin" data-status-date="2026-07-22" data-age="4" data-stage="Admin check" data-journal="Population Health Methods"><div class="item-head"><div><div class="status-row"><span class="badge admin">Admin check</span></div><h3>Geographic Variation in Access to Preventive Services</h3><p class="journal">Population Health Methods</p></div><p class="date-line age-line"><strong>4 days</strong><span>In admin check since Jul 22</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Notes</span>Files received by journal</p><p><span class="label">Coauthors</span>Casey Rivera</p></div></details></article>
-      <article class="item stage-admin" data-tags="with-journal admin" data-status-date="2026-07-05" data-age="21" data-stage="Admin check" data-journal="Implementation Review"><div class="item-head"><div><div class="status-row"><span class="badge admin">Admin check</span></div><h3>Peer Learning Networks for Practice Improvement</h3><p class="journal">Implementation Review</p></div><p class="date-line age-line"><strong>21 days</strong><span>With journal since Jul 5</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Notes</span>Awaiting editorial assignment</p><p><span class="label">Coauthors</span>Riley Shah</p></div></details></article>
-      <article class="item stage-admin" data-tags="with-journal admin" data-status-date="2026-07-23" data-age="3" data-stage="Admin check" data-journal="Health Services Innovations"><div class="item-head"><div><div class="status-row"><span class="badge admin">Awaiting admin processing</span></div><h3>Shared Decision-Making Tools for Outpatient Care</h3><p class="journal">Health Services Innovations</p></div><p class="date-line age-line"><strong>3 days</strong><span>In admin processing since Jul 23</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Manuscript ID</span>DEMO-2026-112</p><p><span class="label">Coauthors</span>Avery Thompson; Drew Kim</p></div></details></article>
-      <article class="item" data-tags="work analysis"><div class="item-head"><div><div class="status-row"><span class="badge work">Analysis preparation</span></div><h3>Remote Work and Research Team Collaboration</h3><p class="journal">No journal target</p></div><p class="date-line"><strong>No deadline</strong>Active work</p></div><div class="item-details"><p><span class="label">Notes</span>Finalize subgroup definitions and sensitivity checks</p><p><span class="label">Coauthors</span>Quinn Foster; Cameron Ellis</p></div></article>
-      <article class="item stage-admin" data-tags="with-journal admin" data-status-date="2026-07-13" data-age="13" data-stage="Admin check" data-journal="Digital Care Quarterly"><div class="item-head"><div><div class="status-row"><span class="badge admin">Admin check</span></div><h3>Designing Reliable Digital Transfers Across Care Settings</h3><p class="journal">Digital Care Quarterly</p></div><p class="date-line age-line"><strong>13 days</strong><span>In admin check since Jul 13</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Notes</span>Editorial screening underway</p><p><span class="label">Coauthors</span>—</p></div></details></article>
-      <article class="item" data-tags="work prep"><div class="item-head"><div><div class="status-row"><span class="badge work">Submission prep</span></div><h3>Detecting Change in Noisy Public Health Indicators</h3><p class="journal">Methods &amp; Measurement</p></div><p class="date-line"><strong>No deadline</strong>Active work</p></div><div class="item-details"><p><span class="label">Notes</span>Final figures and cover letter in progress</p><p><span class="label">Coauthors</span>—</p></div></article>
-      <article class="item stage-admin" data-tags="with-journal admin" data-status-date="2026-07-14" data-age="12" data-stage="Admin check" data-journal="Implementation Studies"><div class="item-head"><div><div class="status-row"><span class="badge admin">Technical check</span></div><h3>Rural and Urban Differences in Primary Care Capacity Growth</h3><p class="journal">Implementation Studies</p></div><p class="date-line age-line"><strong>12 days</strong><span>In current stage since Jul 14</span></p></div><details class="item-more"><summary>Details</summary><div class="item-details"><p><span class="label">Manuscript ID</span>DEMO-2026-095</p><p><span class="label">Notes</span>Technical check in progress</p><p><span class="label">Coauthors</span>Parker Grant; Robin Clark; Devon Lewis</p></div></details></article>
-    </section>
-    <p class="empty" id="empty-state" hidden>No manuscripts match this view.</p>
-    <section class="queue"><div class="section-head"><h2>Other pipeline items</h2><p>Projects, events, and reminders</p></div><div class="queue-grid"><article class="compact"><p class="label">Project / grant</p><h3>Community survey methods pilot</h3><p>Approaching publication-ready</p></article><article class="compact"><p class="label">Protocol</p><h3>Example protocol amendment</h3><p>Completed and submitted</p></article><article class="compact event"><p class="label">Event</p><h3>Annual research methods workshop</h3><p>Aug 12 · Springfield</p></article><article class="compact todo"><p class="label">Todo</p><h3>Register for research writing seminar</h3><p>Registration</p></article><article class="compact todo"><p class="label">Todo</p><h3>Prepare internal seed grant application</h3><p>Deadline Nov 13 · draft budget required</p></article></div></section>
-  </main>
-</div>
+<aside id="sidebar"><button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-controls="sidebar" aria-expanded="true"><span class="toggle-icon" aria-hidden="true">‹</span><span class="toggle-label">Collapse sidebar</span></button><div class="sidebar-content"><p class="eyebrow">research tracker</p><h1>pipeline</h1><p id="generated">Viewed locally</p><div class="stats" aria-label="Pipeline shortcuts"><button type="button" data-filter="attention" aria-pressed="false"><strong data-count="attention">0</strong><span>due within 14 days</span></button><button type="button" data-filter="with-journal" aria-pressed="false"><strong data-count="with-journal">0</strong><span>currently with journal</span></button><button type="button" data-filter="active" class="active" aria-pressed="true"><strong data-count="active">0</strong><span>active landing cards</span></button><button type="button" data-tab="year" aria-pressed="false"><strong>0</strong><span>year-review archive</span></button></div><p class="eyebrow filter-label">filter manuscripts</p><nav aria-label="Manuscript filters"><button type="button" data-filter="active" class="active" aria-pressed="true"><span>Active manuscripts</span><em data-count="active">0</em></button><button type="button" data-filter="attention" aria-pressed="false"><span>Due soon</span><em data-count="attention">0</em></button><button type="button" data-filter="with-journal" aria-pressed="false"><span>With journal</span><em data-count="with-journal">0</em></button><button type="button" data-filter="admin" aria-pressed="false"><span>Admin check</span><em data-count="admin">0</em></button><button type="button" data-filter="submitted" aria-pressed="false"><span>Submitted</span><em data-count="submitted">0</em></button><button type="button" data-filter="review" aria-pressed="false"><span>Under review</span><em data-count="review">0</em></button><button type="button" data-filter="rr" aria-pressed="false"><span>Revise and resubmit</span><em data-count="rr">0</em></button><button type="button" data-filter="revised" aria-pressed="false"><span>Revised submitted</span><em data-count="revised">0</em></button><button type="button" data-filter="accepted" aria-pressed="false"><span>Accepted</span><em data-count="accepted">0</em></button><button type="button" data-filter="rejected" aria-pressed="false"><span>Rejected</span><em data-count="rejected">0</em></button><button type="button" data-filter="work" aria-pressed="false"><span>Needs work</span><em data-count="work">0</em></button><button type="button" data-filter="prep" aria-pressed="false"><span>Submission prep</span><em data-count="prep">0</em></button><button type="button" data-filter="analysis" aria-pressed="false"><span>Analysis</span><em data-count="analysis">0</em></button><button type="button" data-tab="year" aria-pressed="false"><span>Year review</span><em>0</em></button></nav></div></aside>
+<main><div class="top-row"><section><p class="eyebrow">research pipeline</p><h2>What needs attention</h2><div class="attention"><p>No manuscripts have a deadline within the next 14 days.</p></div></section></div>
+<section id="active-panel"><h2 id="heading">Active manuscripts <span id="count">(0)</span></h2><div id="cards" class="list"><!-- MANUSCRIPT_CARDS --></div><p id="empty" class="empty" hidden>No manuscripts in this view. Add records to your local pipeline and rebuild.</p></section>
+<section id="year-panel" class="year-panel"><h2>Year review</h2><p>Accepted items move here 14 days after acceptance.</p><div class="year-list"><!-- YEAR_CARDS --></div></section>
+<section class="queue"><h2>Other pipeline items</h2><div class="queue-grid"><!-- QUEUE_CARDS --></div></section></main></div>
 <script>
-const buttons=[...document.querySelectorAll('[data-filter]')];
-const cards=[...document.querySelectorAll('[data-tags]')];
-const count=document.getElementById('result-count');
-const status=document.getElementById('filter-status');
-const empty=document.getElementById('empty-state');
-const heading=document.getElementById('manuscript-heading');
-const tools=document.getElementById('journal-tools');
-const sort=document.getElementById('journal-sort');
-const list=document.getElementById('manuscripts');
-const labels={all:'manuscript records',attention:'manuscripts due within 14 days','with-journal':'manuscripts currently with a journal',admin:'manuscripts in the first 14 days of journal processing','passed-admin':'manuscripts presumed to have passed admin check after 14 days',review:'manuscripts under review',revised:'revised manuscripts returned to the journal',work:'manuscripts in active work',prep:'manuscripts in submission prep',analysis:'manuscripts in analysis preparation',accepted:'accepted manuscripts',rejected:'rejected manuscripts'};
-const titles={all:'All manuscripts',attention:'Due soon','with-journal':'With journal',admin:'Admin check','passed-admin':'Passed admin check',review:'Under review',revised:'Revised submitted',work:'Active work',prep:'Submission prep',analysis:'Analysis',accepted:'Accepted',rejected:'Rejected'};
-const journalFilters=new Set(['with-journal','admin','passed-admin','review','revised']);
-cards.forEach((card,index)=>card.dataset.original=index);
-let currentFilter='all';
-const today=new Date();
-today.setHours(0,0,0,0);
-function readableDate(value){
-  const [year,month,day]=value.split('-').map(Number);
-  return new Date(year,month-1,day).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const ADMIN_TO_SUBMITTED_DAYS=14,SUBMITTED_TO_REVIEW_DAYS=35,ACCEPTED_LANDING_DAYS=14,DUE_SOON_DAYS=14,DAY=86400000;
+const cards=[...document.querySelectorAll('#cards .item')],yearButtons=[...document.querySelectorAll('[data-tab="year"]')],count=document.getElementById('count'),heading=document.getElementById('heading'),empty=document.getElementById('empty'),activePanel=document.getElementById('active-panel'),yearPanel=document.getElementById('year-panel'),shell=document.querySelector('.shell'),sidebarToggle=document.getElementById('sidebar-toggle');
+let buttons=[...document.querySelectorAll('[data-filter]')];
+const titles={active:'Active manuscripts',attention:'Due soon','with-journal':'With journal',admin:'Admin check',submitted:'Submitted',review:'Under review',revised:'Revised submitted',rr:'Revise and resubmit',accepted:'Accepted',rejected:'Rejected',work:'Needs work',prep:'Submission prep',analysis:'Analysis',drafting:'Drafting',formatting:'Formatting',other:'Other work'};
+const labels={rejected:'Rejected',admin:'Admin check',submitted:'Submitted',review:'Under review',revised:'Revised manuscript submitted',rr:'Revise and resubmit',accepted:'Accepted'};
+const withJournal=new Set(['admin','submitted','review','revised','accepted']);
+
+function nestJournalFilters(){
+  const nav=document.querySelector('nav[aria-label="Manuscript filters"]');
+  const parent=nav.querySelector('[data-filter="with-journal"]');
+  const group=document.createElement('div');
+  group.className='filter-subgroup';
+  group.id='with-journal-stages';
+  group.setAttribute('role','group');
+  group.setAttribute('aria-label','With journal stages');
+  ['admin','submitted','review','revised','accepted'].forEach(status=>{
+    group.appendChild(nav.querySelector(`[data-filter="${status}"]`));
+  });
+  group.hidden=true;
+  parent.setAttribute('aria-controls',group.id);
+  parent.setAttribute('aria-expanded','false');
+  parent.after(group);
 }
-function applyJournalAging(){
-  cards.forEach(card=>{
-    if(!card.dataset.statusDate)return;
-    const [year,month,day]=card.dataset.statusDate.split('-').map(Number);
-    const started=new Date(year,month-1,day);
-    const rawAge=Math.floor((today-started)/86400000);
-    const age=Math.max(0,rawAge);
-    card.dataset.age=age;
-    const tags=new Set(card.dataset.tags.split(' '));
-    const badge=card.querySelector('.badge');
-    const metric=card.querySelector('.age-line strong');
-    const caption=card.querySelector('.age-line span');
-    const since=readableDate(card.dataset.statusDate);
-    if(rawAge<0){metric.textContent='New update';caption.textContent=`Status dated ${since}`;return}
-    metric.textContent=`${age} ${age===1?'day':'days'}`;
-    if(tags.has('review'))caption.textContent=`Under review since ${since}`;
-    else if(tags.has('revised'))caption.textContent=`Revised submission with journal since ${since}`;
-    else if((tags.has('admin')||tags.has('submitted'))&&age>14){
-      tags.delete('admin');
-      tags.delete('submitted');
-      tags.add('passed-admin');
-      card.dataset.tags=[...tags].join(' ');
-      card.classList.remove('stage-admin','stage-submitted');
-      card.classList.add('stage-passed');
-      card.dataset.stage='Passed admin check';
-      badge.classList.remove('admin','journal');
-      badge.classList.add('passed');
-      badge.textContent='Passed admin check';
-      caption.textContent=`With journal since ${since} · default after 14 days`;
-    }else if(tags.has('admin'))caption.textContent=`In admin check since ${since}`;
-    else if(tags.has('submitted')){
-      tags.delete('submitted');
-      tags.add('admin');
-      card.dataset.tags=[...tags].join(' ');
-      card.classList.remove('stage-submitted');
-      card.classList.add('stage-admin');
-      card.dataset.stage='Admin check';
-      badge.classList.remove('journal');
-      badge.classList.add('admin');
-      badge.textContent='Admin check';
-      caption.textContent=`With journal since ${since} · first 14 days`;
+
+function nestWorkFilters(){
+  const nav=document.querySelector('nav[aria-label="Manuscript filters"]');
+  const parent=nav.querySelector('[data-filter="work"]');
+  const group=document.createElement('div');
+  group.className='filter-subgroup';
+  group.id='needs-work-stages';
+  group.setAttribute('role','group');
+  group.setAttribute('aria-label','Needs work stages');
+  ['prep','drafting','analysis','formatting','other'].forEach(status=>{
+    let button=nav.querySelector(`[data-filter="${status}"]`);
+    if(!button){
+      button=document.createElement('button');
+      button.type='button';
+      button.dataset.filter=status;
+      button.setAttribute('aria-pressed','false');
+      const label=document.createElement('span');
+      label.textContent=titles[status];
+      const tally=document.createElement('em');
+      tally.dataset.count=status;
+      tally.textContent='0';
+      button.append(label,tally);
     }
+    group.appendChild(button);
   });
+  group.hidden=true;
+  parent.setAttribute('aria-controls',group.id);
+  parent.setAttribute('aria-expanded','false');
+  parent.after(group);
 }
+
+function toggleSubfilters(parent){
+  const group=document.getElementById(parent.getAttribute('aria-controls'));
+  const expanded=parent.getAttribute('aria-expanded')!=='true';
+  const hasVisibleStage=[...group.querySelectorAll('button')].some(button=>!button.hidden);
+  parent.setAttribute('aria-expanded',expanded?'true':'false');
+  group.hidden=!expanded||!hasVisibleStage;
+}
+// Group manuscripts by status, deadline, and update date.
+const groupRank={rejected:0,rr:1,work:1,revised:2,review:3,submitted:4,admin:5,accepted:6};
+const parseDate=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const today=(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())})();
+const daysSince=date=>Math.floor((today-date)/DAY);
+const fmt=date=>date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+// Escalate a submission through the editorial clock: admin check reads as submitted
+// after 14 days, and a submission reads as under review after 35 days.
+function ageStatus(base,days){
+  if(base!=='admin'&&base!=='submitted')return{status:base,agedFrom:null,sinceDays:days};
+  if(base==='admin'&&days>=SUBMITTED_TO_REVIEW_DAYS)return{status:'review',agedFrom:'admin',sinceDays:days-SUBMITTED_TO_REVIEW_DAYS};
+  if(base==='admin'&&days>=ADMIN_TO_SUBMITTED_DAYS)return{status:'submitted',agedFrom:'admin',sinceDays:days-ADMIN_TO_SUBMITTED_DAYS};
+  if(base==='submitted'&&days>=SUBMITTED_TO_REVIEW_DAYS)return{status:'review',agedFrom:'submitted',sinceDays:days-SUBMITTED_TO_REVIEW_DAYS};
+  return{status:base,agedFrom:null,sinceDays:days};
+}
+
+function renderCard(card){
+  const base=card.dataset.status,statusDate=parseDate(card.dataset.statusDate),days=daysSince(statusDate);
+  const{status,agedFrom}=ageStatus(base,days);
+  const label=labels[status]||card.dataset.statusLabel||'In progress';
+  const deadline=card.dataset.deadline?parseDate(card.dataset.deadline):null;
+  const daysToDeadline=deadline?Math.round((deadline-today)/DAY):null;
+  const dueSoon=daysToDeadline!==null&&daysToDeadline<=DUE_SOON_DAYS;
+  const archived=status==='accepted'&&days>ACCEPTED_LANDING_DAYS;
+
+  const tags=new Set([status,'active']);
+  (card.dataset.subtags||'').split(' ').filter(Boolean).forEach(t=>tags.add(t));
+  if(withJournal.has(status))tags.add('with-journal');
+  if(status==='work'&&!['prep','drafting','analysis','formatting'].some(tag=>tags.has(tag)))tags.add('other');
+  if(dueSoon)tags.add('attention');
+  card.dataset.tags=[...tags].join(' ');
+  card.dataset.archived=archived?'true':'false';
+  card._rank=[groupRank[status]??9,daysToDeadline===null?1:0,daysToDeadline===null?0:daysToDeadline,-days];
+  card.className=`item stage-${status==='work'?'work':status}`;
+
+  const row=card.querySelector('.status-row');
+  row.innerHTML='';
+  const badge=document.createElement('span');
+  badge.className=`badge ${status}`;
+  badge.textContent=label;
+  row.appendChild(badge);
+  if(dueSoon){
+    const due=document.createElement('span');
+    due.className='deadline';
+    due.textContent=`Due ${fmt(deadline)}`;
+    row.appendChild(due);
+  }
+  if(agedFrom)badge.title=`Tracker records ${labels[agedFrom]} on ${fmt(statusDate)}. Displayed as ${label} after ${status==='review'?SUBMITTED_TO_REVIEW_DAYS:ADMIN_TO_SUBMITTED_DAYS} days.`;
+
+  if(status==='rr'){
+    const callout=document.createElement('div');
+    callout.className=`rr-deadline${deadline?'':' missing'}${daysToDeadline!==null&&daysToDeadline<0?' overdue':''}`;
+    const dateText=document.createElement('strong');
+    const detail=document.createElement('span');
+    dateText.textContent=deadline?`Revision due ${fmt(deadline)}`:'Revision deadline date needed';
+    detail.textContent=deadline?(daysToDeadline<0?`${Math.abs(daysToDeadline)} days overdue`:daysToDeadline===0?'Due today':`${daysToDeadline} days remaining`):(card.dataset.deadlineWindow||'Confirm with journal');
+    callout.append(dateText,detail);
+    card.querySelector('.journal').after(callout);
+  }
+
+  const line=card.querySelector('.age-line');
+  const strong=document.createElement('strong');
+  const note=document.createElement('span');
+  if(status==='work'){
+    strong.textContent=daysToDeadline!==null?`${daysToDeadline} days`:'No deadline';
+    note.textContent=daysToDeadline!==null?'Until deadline':'Active work';
+  }else{
+    strong.textContent=days===0?'Today':`${days} days`;
+    note.textContent=`${label} · logged ${fmt(statusDate)}`;
+  }
+  line.innerHTML='';
+  line.append(strong,note);
+}
+
+// Reorder the landing list by status priority, nearest deadline, then oldest update.
+function sortCards(){
+  const list=document.getElementById('cards');
+  [...cards].sort((a,b)=>{
+    for(let i=0;i<a._rank.length;i++){if(a._rank[i]!==b._rank[i])return a._rank[i]-b._rank[i]}
+    return 0;
+  }).forEach(card=>list.appendChild(card));
+}
+
 function refreshCounts(){
-  buttons.forEach(button=>{
-    const filter=button.dataset.filter;
-    const value=filter==='all'?cards.length:cards.filter(card=>card.dataset.tags.split(' ').includes(filter)).length;
-    const number=button.querySelector('em');
-    if(number)number.textContent=value;
+  const totals={};
+  cards.filter(c=>c.dataset.archived!=='true').forEach(card=>{
+    card.dataset.tags.split(' ').forEach(tag=>{totals[tag]=(totals[tag]||0)+1});
   });
-  const journalCards=cards.filter(card=>card.dataset.tags.split(' ').includes('with-journal'));
-  const ages=journalCards.map(card=>Number(card.dataset.age||0)).sort((a,b)=>a-b);
-  const median=ages.length?ages[Math.floor(ages.length/2)]:0;
-  document.getElementById('journal-total').textContent=journalCards.length;
-  document.getElementById('review-total').textContent=journalCards.filter(card=>card.dataset.tags.split(' ').includes('review')).length;
-  document.getElementById('median-age').textContent=`${median} days`;
-  document.getElementById('oldest-age').textContent=`${ages.at(-1)||0} days`;
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const total=totals[el.dataset.count]||0;
+    el.textContent=total;
+    el.closest('button').hidden=total===0&&el.dataset.count!=='active';
+  });
+  document.querySelectorAll('.filter-subgroup').forEach(group=>{
+    const parent=document.querySelector(`[aria-controls="${group.id}"]`);
+    const expanded=parent.getAttribute('aria-expanded')==='true';
+    group.hidden=!expanded||[...group.querySelectorAll('button')].every(button=>button.hidden);
+  });
 }
-applyJournalAging();
+
+function refreshAttention(){
+  const area=document.querySelector('.attention');
+  const due=cards.filter(card=>card.dataset.archived!=='true'&&card.dataset.tags.split(' ').includes('attention'));
+  area.replaceChildren();
+  if(!due.length){
+    const message=document.createElement('p');
+    message.textContent='No manuscripts have a deadline within the next 14 days.';
+    area.append(message);
+    return;
+  }
+  due.sort((a,b)=>parseDate(a.dataset.deadline)-parseDate(b.dataset.deadline));
+  due.forEach(card=>{
+    const alert=document.createElement('article');
+    alert.className='alert';
+    const title=document.createElement('h3');
+    title.textContent=card.querySelector('h3').textContent;
+    const deadline=document.createElement('p');
+    deadline.textContent=`Due ${fmt(parseDate(card.dataset.deadline))}`;
+    alert.append(title,deadline);
+    area.append(alert);
+  });
+}
+
+function showFilter(filter){
+  activePanel.style.display='block';yearPanel.classList.remove('active');
+  yearButtons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+  let n=0;
+  buttons.forEach(b=>{const selected=b.dataset.filter===filter;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',selected?'true':'false')});
+  cards.forEach(card=>{
+    const show=card.dataset.archived!=='true'&&card.dataset.tags.split(' ').includes(filter);
+    card.hidden=!show;if(show)n++;
+  });
+  count.textContent=`(${n})`;heading.childNodes[0].nodeValue=`${titles[filter]} `;empty.hidden=n>0;
+}
+
+cards.forEach(renderCard);
+sortCards();
+nestJournalFilters();
+nestWorkFilters();
+buttons=[...document.querySelectorAll('[data-filter]')];
 refreshCounts();
-function orderCards(mode){
-  const ordered=[...cards].sort((a,b)=>{
-    if(mode==='original')return Number(a.dataset.original)-Number(b.dataset.original);
-    if(mode==='oldest')return Number(b.dataset.age||-1)-Number(a.dataset.age||-1);
-    if(mode==='newest')return Number(a.dataset.age||9999)-Number(b.dataset.age||9999);
-    if(mode==='journal')return (a.dataset.journal||'').localeCompare(b.dataset.journal||'');
-    return (a.dataset.stage||'').localeCompare(b.dataset.stage||'');
+refreshAttention();
+document.getElementById('generated').textContent=`Viewed ${fmt(today)}`;
+buttons.forEach(button=>button.addEventListener('click',()=>{
+  if(['with-journal','work'].includes(button.dataset.filter)&&button.closest('nav'))toggleSubfilters(button);
+  showFilter(button.dataset.filter);
+}));
+yearButtons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});yearButtons.forEach(b=>{b.classList.add('active');b.setAttribute('aria-pressed','true')});activePanel.style.display='none';yearPanel.classList.add('active');}));
+showFilter('active');
+function setSidebarCollapsed(collapsed){shell.classList.toggle('sidebar-collapsed',collapsed);sidebarToggle.setAttribute('aria-expanded',collapsed?'false':'true');sidebarToggle.setAttribute('aria-label',collapsed?'Expand sidebar':'Collapse sidebar');sidebarToggle.querySelector('.toggle-label').textContent=collapsed?'Expand sidebar':'Collapse sidebar';try{localStorage.setItem('pipelineSidebarCollapsed',collapsed?'true':'false')}catch(e){}}
+let savedSidebarState=false;try{savedSidebarState=localStorage.getItem('pipelineSidebarCollapsed')==='true'}catch(e){}setSidebarCollapsed(savedSidebarState);sidebarToggle.addEventListener('click',()=>setSidebarCollapsed(!shell.classList.contains('sidebar-collapsed')));
+
+document.querySelectorAll('#cards .item,.year-list article,.queue-grid article').forEach(card=>{
+  const title=card.querySelector('h3').textContent;
+  const section=card.dataset.pipelineSection||'Manuscripts';
+  const menu=document.createElement('details');
+  menu.className='card-actions';
+  const trigger=document.createElement('summary');
+  trigger.textContent='⋯';trigger.setAttribute('aria-label',`Actions for ${title}`);
+  const actions=document.createElement('div');actions.className='card-action-list';
+  const details=card.querySelector('details');
+  if(details){
+    const view=document.createElement('button');view.type='button';view.textContent='Toggle details';
+    view.addEventListener('click',()=>{details.open=!details.open;menu.open=false;trigger.focus()});
+    actions.append(view);
+  }
+  const remove=document.createElement('button');remove.type='button';remove.className='delete-action';remove.textContent=section==='Manuscripts'?'Delete manuscript':'Delete item';
+  remove.addEventListener('click',async()=>{
+    menu.open=false;
+    if(location.protocol==='file:'){
+      alert('Start the local tracker server to save deletions.');
+      return;
+    }
+    if(!confirm(`Delete “${title}” from your tracker? A backup will remain in the tracker folder.`)){trigger.focus();return}
+    remove.disabled=true;
+    try{
+      const response=await fetch('/api/delete',{method:'POST',headers:{'Content-Type':'application/json','X-Tracker-Action':'delete'},body:JSON.stringify({title,section})});
+      const result=await response.json();
+      if(!response.ok)throw new Error(result.error||'Could not save the deletion.');
+      location.reload();
+    }catch(error){alert(error.message);remove.disabled=false;trigger.focus()}
   });
-  ordered.forEach(card=>list.appendChild(card));
-}
-function applyFilter(filter){
-  currentFilter=filter;
-  const journalView=journalFilters.has(filter);
-  orderCards(journalView?sort.value:'original');
-  let visible=0;
-  buttons.forEach(item=>{const selected=item.dataset.filter===filter;item.classList.toggle('active',selected);item.setAttribute('aria-pressed',selected)});
-  cards.forEach(card=>{const show=filter==='all'||card.dataset.tags.split(' ').includes(filter);card.hidden=!show;if(show)visible++});
-  count.textContent=`(${visible})`;
-  heading.childNodes[0].nodeValue=`${titles[filter]} `;
-  status.textContent=journalView?'Ordered by time in current editorial stage':`Showing ${visible} ${labels[filter]}`;
-  tools.hidden=!journalView;
-  empty.hidden=visible!==0;
-}
-buttons.forEach(button=>button.addEventListener('click',()=>applyFilter(button.dataset.filter)));
-sort.addEventListener('change',()=>{if(journalFilters.has(currentFilter))orderCards(sort.value)});
+  actions.append(remove);menu.append(trigger,actions);card.append(menu);
+  menu.addEventListener('toggle',()=>{if(menu.open)document.querySelectorAll('.card-actions').forEach(other=>{if(other!==menu)other.open=false})});
+  menu.addEventListener('keydown',event=>{if(event.key==='Escape'){menu.open=false;trigger.focus()}});
+});
+document.addEventListener('click',event=>{document.querySelectorAll('.card-actions[open]').forEach(menu=>{if(!menu.contains(event.target))menu.open=false})});
+const archiveCount=document.querySelectorAll('.year-list article').length;
+yearButtons.forEach(button=>{const counter=button.querySelector('strong,em');if(counter)counter.textContent=archiveCount});
 </script>
 </body>
 </html>
